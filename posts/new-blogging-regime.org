@@ -1,0 +1,6 @@
+#+TITLE: The New Blogging Regime (nginx/php-fpm/static files)
+#+DATE: <2014-03-08>
+#+TAGS: meta, php, nginx, org-mode
+
+### Lowering the barrier to entry ###
+Writing blog articles is hard. It's always rewarding,

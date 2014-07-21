@@ -1,0 +1,37 @@
+#+DATE: <2014-03-04>
+#+TITLE: SVN Externals with git-svn (and magit)
+#+TAGS: svn, git, magit, emacs
+
+At work we've made the switch to git, however we've been using SVN up to this point so I'm trying
+to get a consistent process for it. This is where git-svn shines, the integration is great - and it
+lets me embrace [magit (an emacs mode for git)](http://philjackson.github.com/magit/).
+
+```git svn clone --stdlayout some-svn-url```
+
+This gives me 90% of the functionality I need - except for one thing, svn externals. They can be
+a pain, but we've used them for a number of projects in the past, and it would be great if I could
+handle them seamlessly within git-svn.
+
+Scouring stackoverflow resulted in [this post](http://stackoverflow.com/a/350982/520929) which
+suggests using a [git-svn-clone-externals script](https://github.com/andrep/git-svn-clone-externals) to copy each one of your SVN externals (using git-svn clone) to a seperate directory which you ignore. Then symlinks the expected areas of your original codebase to the seperate directory. Presto?
+
+From here, you can go to each git directory and perform the standard ```git svn fetch``` and ```git svn rebase``` - and keep your SVN externals up to date.
+***
+### Magit ###
+However, it's no fun unless you're using magit. Magit's SVN integration is minimal (~300 lines of code) - but it gets the job done, almost.
+
+This code simply adds an extra option "x" to the magit-svn prompt that fetches and rebases each SVN external as a git-svn repository.
+
+<img src="/static/img/magit-svn-1.png" />
+
+<script src="https://gist.github.com/danlamanna/5140604.js"></script>
+
+<div class="alert alert-info">
+  <strong>Note</strong> The above code is in <strong><a href="https://github.com/magit/magit/commit/1c959240adb109db9bc30c171da2fe3fd2dcdc7e">master of magit</a></strong>, but may or may not be in the next release
+</div>
+
+Overall, magit-svn-mode has proven to be really great, with one caveat - when you ```M-x magit-status``` in a git-svn directory it doesn't automatically
+enter magit-svn-mode which can be frustrating, this code checks if your current repository is
+of the git-svn variety, and enables magit-svn-mode automatically if so:
+
+<script src="https://gist.github.com/danlamanna/5140608.js"></script>
